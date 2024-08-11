@@ -4,11 +4,13 @@ pipeline {
             label 'maven'
         }
     }
-
+environment{
+    PATH = "/opt/apache-maven-3.9.8/bin:$PATH"
+}
     stages {
-        stage('Clone-code') {
+        stage('build') {
             steps {
-                git 'https://github.com/spurtips169/Devops_Project2.git'
+                sh 'mvn clean deploy'
             }
         }
     }
