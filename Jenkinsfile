@@ -14,11 +14,11 @@ environment{
                 sh 'mvn clean deploy'
             }
         }
-    }
+    
 
     
-    stage("Jar Publish") {
-        steps {
+        stage("Jar Publish") {
+            steps {
             script {
                     echo '<--------------- Jar Publish Started --------------->'
                      def server = Artifactory.newServer(url:registry+"/artifactory" ,  credentialsId:"artifact-cred")
@@ -39,11 +39,11 @@ environment{
                      server.publishBuildInfo(buildInfo)
                      echo '<--------------- Jar Publish Ended --------------->'  
             
+                }
             }
-        }   
-    } 
+        } 
     
-
+    }
 
 
 }
