@@ -1,6 +1,6 @@
 def registry = 'https://phnx2024.jfrog.io/'
 def imageName = 'phnx2024.jfrog.io/phnx-docker-local//Microservice'
-def version   = '2.0.2'
+def version   = '2.1.4'
 pipeline {
     agent {
         node {
