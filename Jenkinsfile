@@ -1,4 +1,6 @@
 def registry = 'https://phnx2024.jfrog.io/'
+def imageName = 'phnx2024.jfrog.io/phnx-docker-local//Microservice'
+def version   = '2.0.2'
 pipeline {
     agent {
         node {
@@ -19,7 +21,7 @@ environment{
     
         stage("Jar Publish") {
             steps {
-            script {
+                script {
                     echo '<--------------- Jar Publish Started --------------->'
                      def server = Artifactory.newServer(url:registry+"/artifactory" ,  credentialsId:"artifact-cred")
                      def properties = "buildid=${env.BUILD_ID},commitid=${GIT_COMMIT}"
@@ -42,6 +44,29 @@ environment{
                 }
             }
         } 
+
+        stage(" Docker Build ") {
+            steps {
+                script {
+                    echo '<--------------- Docker Build Started --------------->'
+                    app = docker.build(imageName+":"+version)
+                    echo '<--------------- Docker Build Ends --------------->'
+                }
+            }
+        }
+    
+
+        stage (" Docker Publish "){
+            steps {
+                script {
+                    echo '<--------------- Docker Publish Started --------------->'  
+                    docker.withRegistry(registry, 'artifact-cred'){
+                    app.push()
+                    }    
+                    echo '<--------------- Docker Publish Ended --------------->'  
+                }   
+            }
+        }
     
     }
 
